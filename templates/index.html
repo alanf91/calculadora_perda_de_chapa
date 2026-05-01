@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Calculadora de Perda de Chapas</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <main class="container">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Marcenaria / Corte de chapas</p>
+        <h1>Calculadora de perda de chapas</h1>
+        <p class="subtitle">Informe as sobras ou peças perdidas do corte e veja o equivalente em chapas inteiras, m² e custo estimado.</p>
+      </div>
+      <div class="hero-card">
+        <span>Chapa padrão</span>
+        <strong>2750 × 1850 mm</strong>
+        <small>Você pode alterar para qualquer medida.</small>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>1. Dados da chapa</h2>
+      <div class="grid grid-4">
+        <label>
+          Unidade
+          <select id="unidade">
+            <option value="mm" selected>Milímetros</option>
+            <option value="cm">Centímetros</option>
+            <option value="m">Metros</option>
+          </select>
+        </label>
+        <label>
+          Comprimento da chapa
+          <input id="chapaComprimento" type="text" value="2750" inputmode="decimal">
+        </label>
+        <label>
+          Largura da chapa
+          <input id="chapaLargura" type="text" value="1850" inputmode="decimal">
+        </label>
+        <label>
+          Custo por chapa, opcional
+          <input id="custoChapa" type="text" placeholder="Ex.: 180,00" inputmode="decimal">
+        </label>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="section-header">
+        <div>
+          <h2>2. Sobras / peças perdidas</h2>
+          <p>Preencha linha por linha ou cole dados do Excel no campo abaixo.</p>
+        </div>
+        <button type="button" class="secondary" onclick="adicionarLinha()">+ Adicionar linha</button>
+      </div>
+
+      <div class="paste-box">
+        <label>
+          Colar dados do Excel
+          <textarea id="dadosColados" rows="4" placeholder="Formato aceito: Material [TAB] Comprimento [TAB] Largura [TAB] Quantidade&#10;Ex.: MDF 15    500    300    4"></textarea>
+        </label>
+        <div class="actions small-actions">
+          <button type="button" class="secondary" onclick="importarColagem()">Importar colagem</button>
+          <button type="button" class="ghost" onclick="limparLinhas()">Limpar linhas</button>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="tabelaPerdas">
+          <thead>
+            <tr>
+              <th>Material</th>
+              <th>Comprimento</th>
+              <th>Largura</th>
+              <th>Qtd.</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="linhasPerdas"></tbody>
+        </table>
+      </div>
+
+      <div class="actions">
+        <button type="button" onclick="calcular()">Calcular chapas perdidas</button>
+        <button type="button" class="secondary" onclick="exportarCSV()">Exportar CSV</button>
+      </div>
+    </section>
+
+    <section id="resultado" class="resultado hidden"></section>
+  </main>
+
+  <template id="linhaTemplate">
+    <tr>
+      <td><input class="material" type="text" placeholder="MDF 15"></td>
+      <td><input class="comprimento" type="text" inputmode="decimal" placeholder="Ex.: 500"></td>
+      <td><input class="largura" type="text" inputmode="decimal" placeholder="Ex.: 300"></td>
+      <td><input class="quantidade" type="number" min="1" step="1" placeholder="1"></td>
+      <td><button type="button" class="icon" onclick="this.closest('tr').remove()">×</button></td>
+    </tr>
+  </template>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
